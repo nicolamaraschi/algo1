@@ -53,7 +53,26 @@ void* upo_ht_sepchain_countCollision(const upo_ht_sepcian_t ht, const void* key)
   return 0;
 }
 
+Void* upo_ht_sepchain_merge(upo_ht_sepchain_t des_ht,const upo_ht_sepchain_t src_ht){
+    int cntSlotSrc=0;
+    int cntSlotDes=0;
+    if ((src_ht == NULL || src_ht->slots == NULL) && (des_ht == NULL || des_ht->slots == NULL) return NULL;
 
+    size_t h = ht->key_hash(key, sizeof(key));
+    upo_ht_sepchain_list_node_t* n = ht->slots[h].head;
+    
+    while(cntSlotSrc=src_ht->capacity){
+      upo_ht_sepchain_list_node_t *n = ht->slots[cntSlotSrc].head;
+      while(cntSlotDes=des_ht->capacity){
+          if(n->key==)
+      }
+      cntSlotSrc++;
+    }
+    upo_ht_sepchain_put(upo_ht_sepchain_t ht,void* key,void* value)
+    while (n != NULL && key != n->key) n = n->next;
+    if (n != NULL) return n->value;
+    return NULL;
+}
 
       |--------------------------linprob------------------------------------------|
       
