@@ -40,6 +40,21 @@ void upo_ht_sepchain_delete(upo_ht_sepchain_t ht. const void* key, int destroy_d
   ht->size--;
 }
 
+void* upo_ht_sepchain_countCollision(const upo_ht_sepcian_t ht, const void* key){
+  int counter=0;
+  if(ht==NULL || ht->slots==NULL) return NULL;
+  size_t h= ht->key_hash(key,ht->capacity);
+  upo_ht_sepchain_list_node_t* n= ht->slots[h].head;
+  while(n!=NULL && key!=n->key){
+    counter++;
+    n=n->next;
+  }
+  if(n!=NULL) return counter;
+  return 0;
+}
+
+
+
       |--------------------------linprob------------------------------------------|
       
 void* upo_ht_linprob_put(upo_ht_linprob_t ht,void* key, void* value){
