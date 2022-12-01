@@ -117,3 +117,47 @@ void upo_ht_linprob_delite(upo_ht_linprob_t ht const void* key,int destroy_data)
     if (destroy_data) free(ht->slots + h);
   }
 }
+                                                   
+|--------------------------bst------------------------------------------|
+ 
+void* upo_bst_successor(const upo_bst_t bst, const void* key){
+  upo_bst_node_t* node = upo_bst_successor_impl(bst->root,key);
+  if(bst!=NULL) return node->value;
+   else return NULL; 
+}
+void* upo_bst_successor_impl(const upo_bst_t node, const void* key){
+ if(node==NULL) return NULL;
+ if(cmp(key,node->key)>0) return upo_bst_successor_impl(node->left,key)
+ upo_bst_node_t* node_floor = floor(root->right, key);
+ return (node_floor!=NULL) ? node_floor:NULL;    
+}                                                   
+//prova di esempio                                                  
+void* upo_bst_subtree_count_even(const upo_bst_t bst, const void* key){
+
+}
+                                                   
+void* upo_bst_predecessor(const upo_bst_t bst, const void* key); 
+                                                   
+long upo_bst_key_height(const upo_bst_t bst, const void* key);                                                 
+ 
+size_t upo_bst_count_leaves_gt(const upo_bst_t bst, const void* key);
+ 
+void* upo_bst_subtree_count_inner(const upo_bst_t bst, const void* key);                                                  
+ 
+int upo_bst_contains_depth(const upo_bst_t bst, const void* key,long* depth);  
+                                                   
+size_t upo_bst_subtree_size(const upo_bst_t bst, const void* key); 
+// funzione strana
+size_t upo_bst_insert(const upo_bst_t,void* key, void* value);
+ // funzione esame ricostruita perche manca la firma 
+int upo_bst_k2_subtree_k1(const upo_bst_t bst, const void* key);
+                                                   
+// funzione esercizio                                                  
+size_t upo_bst_rank(const upo_bst_t, const void* key);
+// funzione esercizio                                                  
+size_t upo_bst_get_value_depth(const upo_bst_t, const void* key,long* depth);  
+// funzione esercizio
+upo_bst_key_list_t upo_bst_keys_le(const upo_bst_t bst, const void* key);
+// funzione esercizio                                                  
+size_t upo_bst_subtree_count_leaves_depth(const upo_bst_t, const void* key,size_t d);                                                    
+                                                   
