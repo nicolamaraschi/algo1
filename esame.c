@@ -121,32 +121,104 @@ void upo_ht_linprob_delite(upo_ht_linprob_t ht const void* key,int destroy_data)
 |--------------------------bst------------------------------------------|
  
 void* upo_bst_successor(const upo_bst_t bst, const void* key){
-  upo_bst_node_t* node = upo_bst_successor_impl(bst->root,key);
+  upo_bst_node_t* node = upo_bst_successor_impl(bst->root,key,bst->key_cmp);
   if(bst!=NULL) return node->value;
    else return NULL; 
 }
-void* upo_bst_successor_impl(const upo_bst_t node, const void* key){
+void* upo_bst_successor_impl(const upo_bst_t* node, const void* key, upo_bst_comparator_t key_cmp){
  if(node==NULL) return NULL;
- if(cmp(key,node->key)>0) return upo_bst_successor_impl(node->left,key)
+ if(key_cmp(key,node->key)>0) return upo_bst_successor_impl(node->left,key)
  upo_bst_node_t* node_floor = floor(root->right, key);
  return (node_floor!=NULL) ? node_floor:NULL;    
 }                                                   
 //prova di esempio                                                  
-void* upo_bst_subtree_count_even(const upo_bst_t bst, const void* key){
-
+size_t upo_bst_subtree_count_even(const upo_bst_t bst, const void* key){
+  if(bst!=NULL) return upo_bst_subtree_count_even_impl(bst->root,key)
+   else return 0; 
 }
+ void *upo_bst_get_impl(upo_bst_node_t *node, const void *key, upo_bst_comparator_t cmp,double* depth)
+{
+    if (node == NULL){
+      *depth=0;
+      return NULL;
+    }
+
+    if (cmp(key, node->key) < 0){
+       *depth+=1;
+       return upo_bst_get_impl(node->left, key, cmp);
+    }
+    else 
+      if (cmp(key, node->key) > 0){
+       *depth+=1;
+       return upo_bst_get_impl(node->right, key, cmp);
+      }
+    return node;
+} 
                                                    
-void* upo_bst_predecessor(const upo_bst_t bst, const void* key); 
+                                                   
+size_t upo_bst_subtree_count_even_impl(const upo_bst_t* node, const void* key,upo_bst_comparator_t key_cmp){
+  long *depth=0;
+  if(node==NULL) return NULL;
+   upo_bst_node_t* node_subtree= upo_bst_getModificata_impl(node,key, node->key_cmp,depth);
+   if (node_subtree == NULL) return 0;
+   *depth+=1;
+   return (*depth%2==0)? 1 + upo_bst_size_impl(node->left) + upo_bst_size_impl(node->right) : 0 + upo_bst_size_impl(node->left) + upo_bst_size_impl(node->right);
+}
+                                                                                                     
+void* upo_bst_predecessor(const upo_bst_t bst, const void* key){
+  upo_bst_node_t* node= upo_bst_predecessor_impl(bst->root,key,bst->key_kmp);
+  if(bst!=NULL){
+    if(node!=NULL) node->value;
+    
+  }
+  else return NULL;
+}
+void* upo_bst_predecessor_impl(upo_bst_node_t* node, void* key,upo_bst_comparator_t* key_cmp){
+  if(node==NULL) return NULL;
+  if(cmp(key,node->key)<0) upo_bst_predecessor_impl(node->right,key,key_cmp);
+  if(cmp(key,node->key)>0){
+   upo_bst_node_t* node_predecessore= upo_bst_predecessor_impl(node->left,key,key_cmp);
+   if(node_predecessore!=NULL) rerturn node_predecessore;
+   else return NULL;
+  }
+}                                                   
                                                    
 long upo_bst_key_height(const upo_bst_t bst, const void* key);                                                 
  
 size_t upo_bst_count_leaves_gt(const upo_bst_t bst, const void* key);
  
-void* upo_bst_subtree_count_inner(const upo_bst_t bst, const void* key);                                                  
+void* upo_bst_subtree_count_inner(const upo_bst_t bst, const void* key){
+  upo_bst_node_t* node_subtree= upo_bst_subtree_count_inner_impl(bst->root,key,bst->key_cmp);
+  if(bst!=NULL) 
+}                                                  
  
 int upo_bst_contains_depth(const upo_bst_t bst, const void* key,long* depth);  
                                                    
-size_t upo_bst_subtree_size(const upo_bst_t bst, const void* key); 
+size_t upo_bst_subtree_size(const upo_bst_t bst, const void* key){
+  if(bst!=NULL) return upo_bst_subtree_size_impl(bst->root,key,bst->key_cmp);
+  else return 0;
+}
+void* upo_bst_get_impl(upo_bst_node_t *node, const void *key, upo_bst_comparator_t cmp)
+{
+  if(node == NULL) return NULL;
+  if (cmp(key, node->key) < 0) return upo_bst_get_impl(node->left, key, cmp);
+  else if (cmp(key, node->key) > 0) return upo_bst_get_impl(node->right, key, cmp);
+  return node;
+}
+size_t upo_bst_size_impl(const upo_bst_node_t *node)
+{
+  if (node == NULL) return 0;
+  return 1 + upo_bst_size_impl(node->left) + upo_bst_size_impl(node->right);
+}
+                                                   
+size_t upo_bst_subtree_size_impl(upo_bst_node_t* node,void* key,upo_bst_comparator_t* key_cmp){
+  upo_bst_node_t* nodo_subtree= node;
+  if(nodo_subtree!=NULL){
+    size_t size= upo_bst_size_impl(nodo_subtree);
+    return size;
+  }
+  else return 0;
+}                                                  
 // funzione strana
 size_t upo_bst_insert(const upo_bst_t,void* key, void* value);
  // funzione esame ricostruita perche manca la firma 
